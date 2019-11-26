@@ -1,0 +1,16 @@
+language: go
+go:
+  - 1.11.x
+  - 1.13.x
+  - master
+
+env:
+  - GO111MODULE=on
+
+script:
+  - make all
+  - make lint
+  - make GOTEST_FLAGS=-v coverage
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
