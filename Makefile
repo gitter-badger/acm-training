@@ -36,7 +36,7 @@ test: $(TEST_SOURCES)
 	@$(GOTEST) $(GOTEST_FLAGS) ./...
 
 .PHONY: coverage
-coverage: test
+coverage: test lint
 	@echo "Generating coverage report..."
 	@$(GOTEST) -race -coverprofile=$(COVERAGE_REPORT) -covermode=atomic
 
