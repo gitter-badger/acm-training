@@ -9,8 +9,7 @@ env:
 
 script:
   - make all
-  - make lint
-  - make GOTEST_FLAGS=-v coverage
+  - make coverage
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

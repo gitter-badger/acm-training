@@ -1,12 +1,12 @@
 GO := go
 GOGET := $(GO) get
 GOBUILD := $(GO) build
-GOBUILD_FLAGS :=
+GOBUILD_FLAGS := -v
 GOTEST := $(GO) test
-GOTEST_FLAGS :=
+GOTEST_FLAGS := -v
+COVERAGE_FLAGS := -v -race -coverprofile=$(COVERAGE_REPORT) -covermode=atomic
 TARGET := acm-training
 GOLINT := golint
-GOCLEAN := $(GO) clean
 
 COVERAGE_REPORT := coverage.txt
 TEST_SOURCES := $(wildcard **/*.go) main.go
@@ -38,10 +38,9 @@ test: $(TEST_SOURCES)
 .PHONY: coverage
 coverage: test lint
 	@echo "Generating coverage report..."
-	@$(GOTEST) -race -coverprofile=$(COVERAGE_REPORT) -covermode=atomic
+	@$(GOTEST) $(COVERAGE_FLAGS)
 
 .PHONY: clean
 clean:
 	@echo "Perform cleanup..."
-	@$(GOCLEAN)
 	@rm -f $(TARGET)
