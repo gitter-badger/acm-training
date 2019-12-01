@@ -38,7 +38,7 @@ test: $(TEST_SOURCES)
 .PHONY: coverage
 coverage: test lint
 	@echo "Generating coverage report..."
-	@$(GOTEST) $(COVERAGE_FLAGS)
+	@$(GOTEST) $(COVERAGE_FLAGS) ./...
 
 .PHONY: clean
 clean:

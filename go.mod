@@ -3,6 +3,7 @@ module github.com/uestc-acm/acm-training
 go 1.13
 
 require (
+	bou.ke/monkey v1.0.1
 	github.com/gin-contrib/secure v0.0.0-20191128031426-fb27c292757f
 	github.com/gin-gonic/gin v1.5.0
 	github.com/jcelliott/lumber v0.0.0-20160324203708-dd349441af25 // indirect
