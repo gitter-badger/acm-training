@@ -4,7 +4,6 @@ GOBUILD := $(GO) build
 GOBUILD_FLAGS := -v
 GOTEST := $(GO) test
 GOTEST_FLAGS := -v
-COVERAGE_FLAGS := -v -race -coverprofile=$(COVERAGE_REPORT) -covermode=atomic
 TARGET := acm-training
 GOLINT := golint
 
@@ -23,24 +22,29 @@ $(TARGET): $(SOURCES)
 .PHONY: .golint_binary_check
 .golint_binary_check:
 	@echo "Checking golint toolchain..."
-	@which golint > /dev/null || $(GOGET) -u golang.org/x/lint/golint
+	@which golint &> /dev/null || $(GOGET) -u golang.org/x/lint/golint
 
 .PHONY: lint
-lint: .golint_binary_check
+lint: $(TEST_SOURCES) .golint_binary_check
 	@echo "Perform linting..."
 	@$(GOLINT) ./...
 
 .PHONY: test
-test: $(TEST_SOURCES)
+test: $(TEST_SOURCES) lint
 	@echo "Perform testing..."
 	@$(GOTEST) $(GOTEST_FLAGS) ./...
 
+.PHONY: .go_acc_binary_check
+.go_acc_binary_check:
+	@echo "Checking go-acc toolchain..."
+	@which go-acc &> /dev/null || $(GOGET) -u github.com/ory/go-acc
+
 .PHONY: coverage
-coverage: test lint
+coverage: $(TEST_SOURCES) lint .go_acc_binary_check
 	@echo "Generating coverage report..."
-	@$(GOTEST) $(COVERAGE_FLAGS) ./...
+	@go-acc github.com/uestc-acm/acm-training/...
 
 .PHONY: clean
 clean:
 	@echo "Perform cleanup..."
-	@rm -f $(TARGET)
+	@rm -f $(TARGET) $(COVERAGE_REPORT)
